@@ -17,3 +17,14 @@ build:
       goals: package
       cache_repo: true
       version: 3.5.2
+    # Take our tested application revision and its dependencies, bake it in to a
+    # Docker image, and push to OCIR.
+    - internal/docker-push:
+            entrypoint: java -jar ./target/myproject-0.0.1-SNAPSHOT.jar
+            working-dir: $WERCKER_ROOT
+            tag: $WERCKER_GIT_COMMIT
+            ports: "3000"
+            username: $DOCKER_USERNAME
+            password: $DOCKER_PASSWORD
+            repository: $DOCKER_REPO
+            #registry: https://iad.ocir.io/v2
